@@ -14,6 +14,7 @@ function StudentForm() {
   // Loading and error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Form data states - broken down by section
   
@@ -196,6 +197,7 @@ function StudentForm() {
       // Add document to Firestore 'students' collection
       await addDoc(collection(db, 'students'), studentData);
       
+      setSubmitSuccess(true);
       setCurrentStep(4); // Move to success page
     } catch (err: any) {
       console.error('Submit error:', err);

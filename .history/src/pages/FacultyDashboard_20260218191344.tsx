@@ -298,13 +298,13 @@ function FacultyDashboard() {
             <div className="stat-value">
               {students.filter(s => s.hasRelativesInIT).length}
             </div>
-            <div className="stat-label">Students with Professional Contacts</div>
+            <div className="stat-label">Students with IT Connections</div>
           </div>
           <div className="stat-card">
             <div className="stat-value">
               {students.reduce((acc, s) => acc + (s.relativesInIT?.length || 0), 0)}
             </div>
-            <div className="stat-label">Total Professional Contacts</div>
+            <div className="stat-label">Total IT Contacts</div>
           </div>
           <div className="stat-card">
             <div className="stat-value">{filteredStudents.length}</div>
@@ -344,25 +344,9 @@ function FacultyDashboard() {
               </select>
             </div>
 
-            {/* Section Filter */}
+            {/* Has Relatives Filter */}
             <div className="filter-group">
-              <label>Section</label>
-              <select
-                className="filter-input"
-                value={filterSection}
-                onChange={(e) => setFilterSection(e.target.value)}
-              >
-                <option value="">All Sections</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-              </select>
-            </div>
-
-            {/* Has Professional Contacts Filter */}
-            <div className="filter-group">
-              <label>Has Professional Contacts</label>
+              <label>Has Relatives in IT</label>
               <select
                 className="filter-input"
                 value={filterHasRelatives}
@@ -374,16 +358,19 @@ function FacultyDashboard() {
               </select>
             </div>
 
-            {/* Company Filter - Text Input */}
+            {/* Company Filter */}
             <div className="filter-group">
               <label>Company</label>
-              <input
-                type="text"
+              <select
                 className="filter-input"
-                placeholder="Search company name..."
                 value={filterCompany}
                 onChange={(e) => setFilterCompany(e.target.value)}
-              />
+              >
+                <option value="">All Companies</option>
+                {companies.map(company => (
+                  <option key={company} value={company}>{company}</option>
+                ))}
+              </select>
             </div>
 
             {/* Designation Filter */}
@@ -443,11 +430,10 @@ function FacultyDashboard() {
                     <th>Student Name</th>
                     <th>Roll Number</th>
                     <th>Branch</th>
-                    <th>Section</th>
                     <th>Year</th>
                     <th>Contact</th>
-                    <th>Professional Contacts</th>
-                    <th>Actions</th>
+                    <th>IT Relatives</th>
+                    <th>Details</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -456,7 +442,6 @@ function FacultyDashboard() {
                       <td className="td-name">{student.studentName}</td>
                       <td>{student.rollNumber}</td>
                       <td><span className="badge">{student.branch}</span></td>
-                      <td className="td-center">{student.section || '-'}</td>
                       <td>{student.year}</td>
                       <td>
                         <div className="contact-info">
@@ -474,20 +459,12 @@ function FacultyDashboard() {
                         )}
                       </td>
                       <td>
-                        <div className="action-buttons">
-                          <button
-                            className="btn-view"
-                            onClick={() => handleViewDetails(student)}
-                          >
-                            View
-                          </button>
-                          <button
-                            className="btn-delete"
-                            onClick={() => handleDeleteStudent(student.id, student.studentName)}
-                          >
-                            Delete
-                          </button>
-                        </div>
+                        <button
+                          className="btn-view"
+                          onClick={() => handleViewDetails(student)}
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -523,10 +500,6 @@ function FacultyDashboard() {
                   <div className="detail-item">
                     <span className="detail-label">Branch:</span>
                     <span className="detail-value">{selectedStudent.branch}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Section:</span>
-                    <span className="detail-value">{selectedStudent.section || 'N/A'}</span>
                   </div>
                   <div className="detail-item">
                     <span className="detail-label">Year:</span>
@@ -582,10 +555,10 @@ function FacultyDashboard() {
                 </div>
               </section>
 
-              {/* Siblings in Engineering/Professional field */}
+              {/* Siblings in IT */}
               {selectedStudent.hasSiblingsInIT && selectedStudent.siblings && selectedStudent.siblings.length > 0 && (
                 <section className="detail-section">
-                  <h3>Siblings in Engineering/Professional Field</h3>
+                  <h3>Siblings in IT</h3>
                   {selectedStudent.siblings.map((sibling, index) => (
                     <div key={index} className="card-detail">
                       <div className="detail-grid">
@@ -615,10 +588,10 @@ function FacultyDashboard() {
                 </section>
               )}
 
-              {/* Professional Contacts */}
+              {/* Relatives in IT */}
               {selectedStudent.hasRelativesInIT && selectedStudent.relativesInIT && selectedStudent.relativesInIT.length > 0 && (
                 <section className="detail-section">
-                  <h3>Professional Contacts (Engineering/Related Fields)</h3>
+                  <h3>Relatives/Friends in IT Field</h3>
                   {selectedStudent.relativesInIT.map((relative, index) => (
                     <div key={index} className="card-detail">
                       <div className="detail-grid">
@@ -667,8 +640,8 @@ function FacultyDashboard() {
               {/* Show message if no relatives */}
               {!selectedStudent.hasRelativesInIT && (
                 <section className="detail-section">
-                  <h3>Professional Contacts</h3>
-                  <p className="no-data-message">No professional contacts in engineering or related fields.</p>
+                  <h3>Relatives/Friends in IT Field</h3>
+                  <p className="no-data-message">No relatives or friends in IT field.</p>
                 </section>
               )}
             </div>

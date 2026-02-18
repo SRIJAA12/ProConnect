@@ -14,6 +14,7 @@ function StudentForm() {
   // Loading and error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Form data states - broken down by section
   
@@ -196,6 +197,7 @@ function StudentForm() {
       // Add document to Firestore 'students' collection
       await addDoc(collection(db, 'students'), studentData);
       
+      setSubmitSuccess(true);
       setCurrentStep(4); // Move to success page
     } catch (err: any) {
       console.error('Submit error:', err);
@@ -557,13 +559,13 @@ function StudentForm() {
     </div>
   );
 
-  // Step 4: Relatives/Friends/Neighbors in Engineering/Professional Field (Most Important Section!)
+  // Step 4: Relatives/Friends/Neighbors in IT (Most Important Section!)
   const renderRelativesSection = () => (
     <div className="form-section">
-      <h2>Professional Contacts</h2>
+      <h2>Relatives/Friends/Neighbors in IT/CS Field</h2>
       <p className="section-description">
-        Please provide details of any relatives, family friends, or neighbors working in Engineering/Professional field
-        (IT, CS, ECE, EEE, Mechanical, Civil, etc.). This helps us build a network for internships, guest lectures, and career guidance.
+        Please provide details of any relatives, family friends, or neighbors working in IT/Computer Science field.
+        This helps us build a network for internships, guest lectures, and career guidance.
       </p>
       
       <div className="form-group">
@@ -573,17 +575,10 @@ function StudentForm() {
             checked={hasRelativesInIT}
             onChange={(e) => {
               setHasRelativesInIT(e.target.checked);
-              if (!e.target.checked) {
-                setRelativesInIT([]);
-              } else {
-                // Auto-add first relative form when checkbox is clicked
-                if (relativesInIT.length === 0) {
-                  addRelative();
-                }
-              }
+              if (!e.target.checked) setRelativesInIT([]);
             }}
           />
-          <span>I have relatives/friends/neighbors in Engineering/Professional field</span>
+          <span>I have relatives/friends/neighbors in IT/CS field</span>
         </label>
       </div>
 
@@ -601,7 +596,6 @@ function StudentForm() {
                     className="form-input"
                     value={relative.name}
                     onChange={(e) => updateRelative(index, 'name', e.target.value)}
-                    required
                   />
                 </div>
 
@@ -611,7 +605,6 @@ function StudentForm() {
                     className="form-input"
                     value={relative.gender}
                     onChange={(e) => updateRelative(index, 'gender', e.target.value)}
-                    required
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -628,7 +621,6 @@ function StudentForm() {
                   placeholder="e.g., Uncle, Aunt, Neighbor, Family Friend, Cousin"
                   value={relative.relationship}
                   onChange={(e) => updateRelative(index, 'relationship', e.target.value)}
-                  required
                 />
               </div>
 
@@ -638,10 +630,9 @@ function StudentForm() {
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="e.g., Google, TCS, Infosys, L&T, BHEL, Own Business"
+                    placeholder="e.g., Google, TCS, Infosys, Own Business"
                     value={relative.company}
                     onChange={(e) => updateRelative(index, 'company', e.target.value)}
-                    required
                   />
                 </div>
 
@@ -650,10 +641,9 @@ function StudentForm() {
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="e.g., Software Engineer, Design Engineer, Project Engineer"
+                    placeholder="e.g., Software Engineer, Tech Lead, CTO"
                     value={relative.designation}
                     onChange={(e) => updateRelative(index, 'designation', e.target.value)}
-                    required
                   />
                 </div>
               </div>
@@ -667,19 +657,17 @@ function StudentForm() {
                     placeholder="e.g., Bangalore, Chennai, Hyderabad"
                     value={relative.workCity}
                     onChange={(e) => updateRelative(index, 'workCity', e.target.value)}
-                    required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Years of Experience *</label>
+                  <label className="form-label">Years of Experience</label>
                   <input
                     type="number"
                     className="form-input"
                     min="0"
                     value={relative.yearsOfExperience}
                     onChange={(e) => updateRelative(index, 'yearsOfExperience', parseInt(e.target.value) || 0)}
-                    required
                   />
                 </div>
               </div>
@@ -693,19 +681,17 @@ function StudentForm() {
                     placeholder="10-digit mobile number"
                     value={relative.contactNumber}
                     onChange={(e) => updateRelative(index, 'contactNumber', e.target.value)}
-                    required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Email Address *</label>
+                  <label className="form-label">Email Address</label>
                   <input
                     type="email"
                     className="form-input"
                     placeholder="email@example.com"
                     value={relative.email}
                     onChange={(e) => updateRelative(index, 'email', e.target.value)}
-                    required
                   />
                 </div>
               </div>
@@ -729,6 +715,20 @@ function StudentForm() {
           </button>
         </>
       )}
+    </div>
+  );
+
+  // Step 5: Academic Details (Optional)
+  const renderAcademicDetails = () => (
+    <div className="form-section">
+      <h2>Academic Details (Optional)</h2>
+      <p className="section-description">
+        You can skip this section if you don't have any internships, awards, or certificates yet.
+      </p>
+      
+      <div className="optional-note">
+        <p>This section is optional and can be filled later. Click "Submit Form" to complete.</p>
+      </div>
     </div>
   );
 
@@ -776,7 +776,7 @@ function StudentForm() {
           {error && <div className="error-message">{error}</div>}
 
           {/* Navigation buttons */}
-          {currentStep < 4 && (
+          {currentStep < 5 && (
             <div className="form-nav-buttons">
               {currentStep > 0 && (
                 <button
@@ -789,7 +789,7 @@ function StudentForm() {
                 </button>
               )}
 
-              {currentStep < 3 && (
+              {currentStep < 4 && (
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -799,7 +799,7 @@ function StudentForm() {
                 </button>
               )}
 
-              {currentStep === 3 && (
+              {currentStep === 4 && (
                 <button
                   type="button"
                   className="btn btn-primary"

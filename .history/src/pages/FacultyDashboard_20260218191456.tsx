@@ -489,6 +489,7 @@ function FacultyDashboard() {
                           </button>
                         </div>
                       </td>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -523,10 +524,6 @@ function FacultyDashboard() {
                   <div className="detail-item">
                     <span className="detail-label">Branch:</span>
                     <span className="detail-value">{selectedStudent.branch}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Section:</span>
-                    <span className="detail-value">{selectedStudent.section || 'N/A'}</span>
                   </div>
                   <div className="detail-item">
                     <span className="detail-label">Year:</span>
@@ -582,10 +579,10 @@ function FacultyDashboard() {
                 </div>
               </section>
 
-              {/* Siblings in Engineering/Professional field */}
+              {/* Siblings in IT */}
               {selectedStudent.hasSiblingsInIT && selectedStudent.siblings && selectedStudent.siblings.length > 0 && (
                 <section className="detail-section">
-                  <h3>Siblings in Engineering/Professional Field</h3>
+                  <h3>Siblings in IT</h3>
                   {selectedStudent.siblings.map((sibling, index) => (
                     <div key={index} className="card-detail">
                       <div className="detail-grid">
@@ -615,10 +612,10 @@ function FacultyDashboard() {
                 </section>
               )}
 
-              {/* Professional Contacts */}
+              {/* Relatives in IT */}
               {selectedStudent.hasRelativesInIT && selectedStudent.relativesInIT && selectedStudent.relativesInIT.length > 0 && (
                 <section className="detail-section">
-                  <h3>Professional Contacts (Engineering/Related Fields)</h3>
+                  <h3>Relatives/Friends in IT Field</h3>
                   {selectedStudent.relativesInIT.map((relative, index) => (
                     <div key={index} className="card-detail">
                       <div className="detail-grid">
@@ -667,8 +664,8 @@ function FacultyDashboard() {
               {/* Show message if no relatives */}
               {!selectedStudent.hasRelativesInIT && (
                 <section className="detail-section">
-                  <h3>Professional Contacts</h3>
-                  <p className="no-data-message">No professional contacts in engineering or related fields.</p>
+                  <h3>Relatives/Friends in IT Field</h3>
+                  <p className="no-data-message">No relatives or friends in IT field.</p>
                 </section>
               )}
             </div>

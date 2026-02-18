@@ -14,6 +14,7 @@ function StudentForm() {
   // Loading and error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Form data states - broken down by section
   
@@ -177,7 +178,6 @@ function StudentForm() {
         personalMail,
         collegeMail,
         branch,
-        section,
         year,
         motherName,
         motherEducation,
@@ -189,6 +189,9 @@ function StudentForm() {
         siblings,
         hasRelativesInIT,
         relativesInIT,
+        internships,
+        awards,
+        certificates,
         createdAt: new Date(),
         updatedAt: new Date()
       };
@@ -196,7 +199,8 @@ function StudentForm() {
       // Add document to Firestore 'students' collection
       await addDoc(collection(db, 'students'), studentData);
       
-      setCurrentStep(4); // Move to success page
+      setSubmitSuccess(true);
+      setCurrentStep(5); // Move to success page
     } catch (err: any) {
       console.error('Submit error:', err);
       setError('Failed to submit form. Please try again.');
@@ -217,6 +221,8 @@ function StudentForm() {
       case 3:
         return renderRelativesSection();
       case 4:
+        return renderAcademicDetails();
+      case 5:
         return renderSuccessMessage();
       default:
         return null;
@@ -236,7 +242,6 @@ function StudentForm() {
           placeholder="Enter your full name"
           value={studentName}
           onChange={(e) => setStudentName(e.target.value)}
-          required
         />
       </div>
 
@@ -248,7 +253,6 @@ function StudentForm() {
           placeholder="e.g., 22B001"
           value={rollNumber}
           onChange={(e) => setRollNumber(e.target.value)}
-          required
         />
       </div>
 
@@ -259,7 +263,6 @@ function StudentForm() {
             className="form-input"
             value={branch}
             onChange={(e) => setBranch(e.target.value)}
-            required
           >
             <option value="">Select Branch</option>
             <option value="CSE">Computer Science Engineering</option>
@@ -269,41 +272,23 @@ function StudentForm() {
             <option value="MECH">Mechanical Engineering</option>
             <option value="CIVIL">Civil Engineering</option>
             <option value="AIDS">Artificial Intelligence and Data Science</option>
-            <option value="CSBS">Computer Science and Business Systems</option>
           </select>
         </div>
 
         <div className="form-group">
-          <label className="form-label">Section *</label>
+          <label className="form-label">Year *</label>
           <select
             className="form-input"
-            value={section}
-            onChange={(e) => setSection(e.target.value)}
-            required
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
           >
-            <option value="">Select Section</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
+            <option value="">Select Year</option>
+            <option value="First Year">First Year</option>
+            <option value="Second Year">Second Year</option>
+            <option value="Third Year">Third Year</option>
+            <option value="Final Year">Final Year</option>
           </select>
         </div>
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Year *</label>
-        <select
-          className="form-input"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          required
-        >
-          <option value="">Select Year</option>
-          <option value="First Year">First Year</option>
-          <option value="Second Year">Second Year</option>
-          <option value="Third Year">Third Year</option>
-          <option value="Final Year">Final Year</option>
-        </select>
       </div>
 
       <div className="form-group">
@@ -314,31 +299,28 @@ function StudentForm() {
           placeholder="10-digit mobile number"
           value={mobileNo}
           onChange={(e) => setMobileNo(e.target.value)}
-          required
         />
       </div>
 
       <div className="form-group">
-        <label className="form-label">Parent Mobile Number *</label>
+        <label className="form-label">Parent Mobile Number</label>
         <input
           type="tel"
           className="form-input"
           placeholder="Parent's mobile number"
           value={parentMobile}
           onChange={(e) => setParentMobile(e.target.value)}
-          required
         />
       </div>
 
       <div className="form-group">
-        <label className="form-label">Personal Email *</label>
+        <label className="form-label">Personal Email</label>
         <input
           type="email"
           className="form-input"
           placeholder="your.email@gmail.com"
           value={personalMail}
           onChange={(e) => setPersonalMail(e.target.value)}
-          required
         />
       </div>
 
@@ -350,7 +332,6 @@ function StudentForm() {
           placeholder="yourname@psgitech.ac.in"
           value={collegeMail}
           onChange={(e) => setCollegeMail(e.target.value)}
-          required
         />
         <small className="form-hint">Must end with @psgitech.ac.in</small>
       </div>
@@ -370,32 +351,29 @@ function StudentForm() {
           className="form-input"
           value={motherName}
           onChange={(e) => setMotherName(e.target.value)}
-          required
         />
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label className="form-label">Education *</label>
+          <label className="form-label">Education</label>
           <input
             type="text"
             className="form-input"
             placeholder="e.g., B.E, M.Sc, PhD"
             value={motherEducation}
             onChange={(e) => setMotherEducation(e.target.value)}
-            required
           />
         </div>
 
         <div className="form-group">
-          <label className="form-label">Occupation *</label>
+          <label className="form-label">Occupation</label>
           <input
             type="text"
             className="form-input"
             placeholder="e.g., Teacher, Engineer"
             value={motherOccupation}
             onChange={(e) => setMotherOccupation(e.target.value)}
-            required
           />
         </div>
       </div>
@@ -408,42 +386,39 @@ function StudentForm() {
           className="form-input"
           value={fatherName}
           onChange={(e) => setFatherName(e.target.value)}
-          required
         />
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label className="form-label">Education *</label>
+          <label className="form-label">Education</label>
           <input
             type="text"
             className="form-input"
             placeholder="e.g., B.E, M.Sc, PhD"
             value={fatherEducation}
             onChange={(e) => setFatherEducation(e.target.value)}
-            required
           />
         </div>
 
         <div className="form-group">
-          <label className="form-label">Occupation *</label>
+          <label className="form-label">Occupation</label>
           <input
             type="text"
             className="form-input"
             placeholder="e.g., Doctor, Business"
             value={fatherOccupation}
             onChange={(e) => setFatherOccupation(e.target.value)}
-            required
           />
         </div>
       </div>
     </div>
   );
 
-  // Step 3: Siblings in Engineering/Professional field
+  // Step 3: Siblings in IT
   const renderSiblingsSection = () => (
     <div className="form-section">
-      <h2>Siblings in Engineering/Professional Field</h2>
+      <h2>Siblings in IT/Computer Science</h2>
       
       <div className="form-group">
         <label className="checkbox-label">
@@ -452,17 +427,10 @@ function StudentForm() {
             checked={hasSiblingsInIT}
             onChange={(e) => {
               setHasSiblingsInIT(e.target.checked);
-              if (!e.target.checked) {
-                setSiblings([]);
-              } else {
-                // Auto-add first sibling form when checkbox is clicked
-                if (siblings.length === 0) {
-                  addSibling();
-                }
-              }
+              if (!e.target.checked) setSiblings([]);
             }}
           />
-          <span>I have siblings working in Engineering/Professional field</span>
+          <span>I have siblings working in IT/CS field</span>
         </label>
       </div>
 
@@ -473,64 +441,59 @@ function StudentForm() {
               <h3>Sibling {index + 1}</h3>
               
               <div className="form-group">
-                <label className="form-label">Name *</label>
+                <label className="form-label">Name</label>
                 <input
                   type="text"
                   className="form-input"
                   value={sibling.name}
                   onChange={(e) => updateSibling(index, 'name', e.target.value)}
-                  required
                 />
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Education *</label>
+                  <label className="form-label">Education</label>
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="e.g., B.Tech, M.Tech, B.E"
+                    placeholder="e.g., B.Tech, M.Tech"
                     value={sibling.education}
                     onChange={(e) => updateSibling(index, 'education', e.target.value)}
-                    required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Company *</label>
+                  <label className="form-label">Company</label>
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="e.g., Google, TCS, L&T, BHEL"
+                    placeholder="e.g., Google, TCS"
                     value={sibling.company}
                     onChange={(e) => updateSibling(index, 'company', e.target.value)}
-                    required
                   />
                 </div>
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Designation *</label>
+                  <label className="form-label">Designation</label>
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="e.g., Software Engineer, Design Engineer"
+                    placeholder="e.g., Software Engineer"
                     value={sibling.designation}
                     onChange={(e) => updateSibling(index, 'designation', e.target.value)}
-                    required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">City *</label>
+                  <label className="form-label">City</label>
                   <input
                     type="text"
                     className="form-input"
                     placeholder="e.g., Bangalore, Chennai"
                     value={sibling.city}
                     onChange={(e) => updateSibling(index, 'city', e.target.value)}
-                    required
                   />
                 </div>
               </div>
@@ -557,13 +520,13 @@ function StudentForm() {
     </div>
   );
 
-  // Step 4: Relatives/Friends/Neighbors in Engineering/Professional Field (Most Important Section!)
+  // Step 4: Relatives/Friends/Neighbors in IT (Most Important Section!)
   const renderRelativesSection = () => (
     <div className="form-section">
-      <h2>Professional Contacts</h2>
+      <h2>Relatives/Friends/Neighbors in IT/CS Field</h2>
       <p className="section-description">
-        Please provide details of any relatives, family friends, or neighbors working in Engineering/Professional field
-        (IT, CS, ECE, EEE, Mechanical, Civil, etc.). This helps us build a network for internships, guest lectures, and career guidance.
+        Please provide details of any relatives, family friends, or neighbors working in IT/Computer Science field.
+        This helps us build a network for internships, guest lectures, and career guidance.
       </p>
       
       <div className="form-group">
@@ -573,17 +536,10 @@ function StudentForm() {
             checked={hasRelativesInIT}
             onChange={(e) => {
               setHasRelativesInIT(e.target.checked);
-              if (!e.target.checked) {
-                setRelativesInIT([]);
-              } else {
-                // Auto-add first relative form when checkbox is clicked
-                if (relativesInIT.length === 0) {
-                  addRelative();
-                }
-              }
+              if (!e.target.checked) setRelativesInIT([]);
             }}
           />
-          <span>I have relatives/friends/neighbors in Engineering/Professional field</span>
+          <span>I have relatives/friends/neighbors in IT/CS field</span>
         </label>
       </div>
 
@@ -601,7 +557,6 @@ function StudentForm() {
                     className="form-input"
                     value={relative.name}
                     onChange={(e) => updateRelative(index, 'name', e.target.value)}
-                    required
                   />
                 </div>
 
@@ -611,7 +566,6 @@ function StudentForm() {
                     className="form-input"
                     value={relative.gender}
                     onChange={(e) => updateRelative(index, 'gender', e.target.value)}
-                    required
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -628,7 +582,6 @@ function StudentForm() {
                   placeholder="e.g., Uncle, Aunt, Neighbor, Family Friend, Cousin"
                   value={relative.relationship}
                   onChange={(e) => updateRelative(index, 'relationship', e.target.value)}
-                  required
                 />
               </div>
 
@@ -638,10 +591,9 @@ function StudentForm() {
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="e.g., Google, TCS, Infosys, L&T, BHEL, Own Business"
+                    placeholder="e.g., Google, TCS, Infosys, Own Business"
                     value={relative.company}
                     onChange={(e) => updateRelative(index, 'company', e.target.value)}
-                    required
                   />
                 </div>
 
@@ -650,10 +602,9 @@ function StudentForm() {
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="e.g., Software Engineer, Design Engineer, Project Engineer"
+                    placeholder="e.g., Software Engineer, Tech Lead, CTO"
                     value={relative.designation}
                     onChange={(e) => updateRelative(index, 'designation', e.target.value)}
-                    required
                   />
                 </div>
               </div>
@@ -667,19 +618,17 @@ function StudentForm() {
                     placeholder="e.g., Bangalore, Chennai, Hyderabad"
                     value={relative.workCity}
                     onChange={(e) => updateRelative(index, 'workCity', e.target.value)}
-                    required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Years of Experience *</label>
+                  <label className="form-label">Years of Experience</label>
                   <input
                     type="number"
                     className="form-input"
                     min="0"
                     value={relative.yearsOfExperience}
                     onChange={(e) => updateRelative(index, 'yearsOfExperience', parseInt(e.target.value) || 0)}
-                    required
                   />
                 </div>
               </div>
@@ -693,19 +642,17 @@ function StudentForm() {
                     placeholder="10-digit mobile number"
                     value={relative.contactNumber}
                     onChange={(e) => updateRelative(index, 'contactNumber', e.target.value)}
-                    required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Email Address *</label>
+                  <label className="form-label">Email Address</label>
                   <input
                     type="email"
                     className="form-input"
                     placeholder="email@example.com"
                     value={relative.email}
                     onChange={(e) => updateRelative(index, 'email', e.target.value)}
-                    required
                   />
                 </div>
               </div>
@@ -729,6 +676,20 @@ function StudentForm() {
           </button>
         </>
       )}
+    </div>
+  );
+
+  // Step 5: Academic Details (Optional)
+  const renderAcademicDetails = () => (
+    <div className="form-section">
+      <h2>Academic Details (Optional)</h2>
+      <p className="section-description">
+        You can skip this section if you don't have any internships, awards, or certificates yet.
+      </p>
+      
+      <div className="optional-note">
+        <p>This section is optional and can be filled later. Click "Submit Form" to complete.</p>
+      </div>
     </div>
   );
 
@@ -776,7 +737,7 @@ function StudentForm() {
           {error && <div className="error-message">{error}</div>}
 
           {/* Navigation buttons */}
-          {currentStep < 4 && (
+          {currentStep < 5 && (
             <div className="form-nav-buttons">
               {currentStep > 0 && (
                 <button
@@ -789,7 +750,7 @@ function StudentForm() {
                 </button>
               )}
 
-              {currentStep < 3 && (
+              {currentStep < 4 && (
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -799,7 +760,7 @@ function StudentForm() {
                 </button>
               )}
 
-              {currentStep === 3 && (
+              {currentStep === 4 && (
                 <button
                   type="button"
                   className="btn btn-primary"

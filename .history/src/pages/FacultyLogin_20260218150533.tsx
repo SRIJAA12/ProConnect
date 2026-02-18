@@ -85,13 +85,13 @@ function FacultyLogin() {
           {/* Employee ID / Email Input */}
           <div className="form-group">
             <label htmlFor="employeeId" className="form-label">
-              Email
+              Employee ID or Email
             </label>
             <input
               type="text"
               id="employeeId"
               className="form-input"
-              placeholder="e.g name@psgitech.ac.in"
+              placeholder="e.g., FAC001 or name@psgitech.ac.in"
               value={employeeId}
               onChange={(e) => setEmployeeId(e.target.value)}
               disabled={loading}

@@ -14,6 +14,7 @@ function StudentForm() {
   // Loading and error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Form data states - broken down by section
   
@@ -196,6 +197,7 @@ function StudentForm() {
       // Add document to Firestore 'students' collection
       await addDoc(collection(db, 'students'), studentData);
       
+      setSubmitSuccess(true);
       setCurrentStep(4); // Move to success page
     } catch (err: any) {
       console.error('Submit error:', err);
@@ -776,7 +778,7 @@ function StudentForm() {
           {error && <div className="error-message">{error}</div>}
 
           {/* Navigation buttons */}
-          {currentStep < 4 && (
+          {currentStep < 5 && (
             <div className="form-nav-buttons">
               {currentStep > 0 && (
                 <button
@@ -789,7 +791,7 @@ function StudentForm() {
                 </button>
               )}
 
-              {currentStep < 3 && (
+              {currentStep < 4 && (
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -799,7 +801,7 @@ function StudentForm() {
                 </button>
               )}
 
-              {currentStep === 3 && (
+              {currentStep === 4 && (
                 <button
                   type="button"
                   className="btn btn-primary"

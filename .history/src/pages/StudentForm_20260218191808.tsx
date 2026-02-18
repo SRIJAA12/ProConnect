@@ -196,6 +196,7 @@ function StudentForm() {
       // Add document to Firestore 'students' collection
       await addDoc(collection(db, 'students'), studentData);
       
+      setSubmitSuccess(true);
       setCurrentStep(4); // Move to success page
     } catch (err: any) {
       console.error('Submit error:', err);

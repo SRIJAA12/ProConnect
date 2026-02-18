@@ -91,7 +91,7 @@ function FacultyLogin() {
               type="text"
               id="employeeId"
               className="form-input"
-              placeholder="e.g name@psgitech.ac.in"
+              placeholder="e.g., FAC001 or name@psgitech.ac.in"
               value={employeeId}
               onChange={(e) => setEmployeeId(e.target.value)}
               disabled={loading}

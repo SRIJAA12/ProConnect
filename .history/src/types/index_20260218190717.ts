@@ -34,7 +34,6 @@ export interface Student {
   personalMail: string;
   collegeMail: string;           // Must end with @psgitech.ac.in
   branch: string;                // ECE, CSE, AIDS, etc.
-  section: string;               // A, B, C, D
   year: string;                  // First Year, Second Year, etc.
   rollNumber: string;
   
@@ -46,7 +45,7 @@ export interface Student {
   fatherEducation: string;
   fatherOccupation: string;
   
-  // Siblings in Engineering/Professional field
+  // Siblings in IT
   hasSiblingsInIT: boolean;
   siblings: {
     name: string;
@@ -56,9 +55,29 @@ export interface Student {
     city: string;
   }[];
   
-  // Relatives/Friends/Neighbors in Engineering/Professional field
+  // Relatives/Friends/Neighbors in IT/CS
   hasRelativesInIT: boolean;
   relativesInIT: RelativeInIT[];  // Array because a student can have multiple relatives
+  
+  // Additional academic information
+  internships: {
+    title: string;
+    company: string;
+    duration: string;
+    description: string;
+  }[];
+  
+  awards: {
+    name: string;
+    year: string;
+    description: string;
+  }[];
+  
+  certificates: {
+    name: string;
+    issuer: string;
+    date: string;
+  }[];
   
   // Metadata
   createdAt: Date;              // When form was submitted

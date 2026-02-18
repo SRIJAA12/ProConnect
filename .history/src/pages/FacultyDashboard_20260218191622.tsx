@@ -489,6 +489,7 @@ function FacultyDashboard() {
                           </button>
                         </div>
                       </td>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
