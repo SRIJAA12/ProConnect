@@ -358,5 +358,4 @@ For questions or issues:
 ---
 
 **Made for PSGiTech** | **Computer Science Department** | **2026**
-#   S i b l i n g s 1  
- 
+#
