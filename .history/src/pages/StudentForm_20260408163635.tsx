@@ -1477,29 +1477,16 @@ function StudentForm() {
                     </div>
 
                     <div className="form-group">
-                      <label className="form-label">Job Title / Designation *</label>
+                      <label className="form-label">Office Contact Number *</label>
                       <input
-                        type="text"
+                        type="tel"
                         className="form-input"
-                        placeholder="e.g., Software Engineer, Manager, Project Lead"
-                        value={relative.designation || ''}
-                        onChange={(e) => updateRelative(index, 'designation', e.target.value)}
+                        placeholder="Office landline or mobile"
+                        value={relative.officeContactNumber || ''}
+                        onChange={(e) => updateRelative(index, 'officeContactNumber', e.target.value)}
                         required
                       />
                     </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Years of Experience *</label>
-                    <input
-                      type="number"
-                      className="form-input"
-                      placeholder="e.g., 0, 5, 10"
-                      value={relative.yearsOfExperience || 0}
-                      onChange={(e) => updateRelative(index, 'yearsOfExperience', parseInt(e.target.value) || 0)}
-                      min="0"
-                      required
-                    />
                   </div>
 
                   <div className="form-group">
@@ -1514,30 +1501,16 @@ function StudentForm() {
                     />
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Office Contact Number *</label>
-                      <input
-                        type="tel"
-                        className="form-input"
-                        placeholder="Office landline or mobile"
-                        value={relative.officeContactNumber || ''}
-                        onChange={(e) => updateRelative(index, 'officeContactNumber', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Official Email ID *</label>
-                      <input
-                        type="email"
-                        className="form-input"
-                        placeholder="official.email@company.com"
-                        value={relative.officeEmail || ''}
-                        onChange={(e) => updateRelative(index, 'officeEmail', e.target.value)}
-                        required
-                      />
-                    </div>
+                  <div className="form-group">
+                    <label className="form-label">Official Email ID *</label>
+                    <input
+                      type="email"
+                      className="form-input"
+                      placeholder="official.email@company.com"
+                      value={relative.officeEmail || ''}
+                      onChange={(e) => updateRelative(index, 'officeEmail', e.target.value)}
+                      required
+                    />
                   </div>
                 </>
               )}

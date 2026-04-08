@@ -45,6 +45,15 @@ function FacultyDashboard() {
   const [branches] = useState<string[]>([
     'CSE', 'ECE', 'EEE', 'ICE', 'MECH', 'CIVIL', 'AIDS', 'CSBS' , 'VLSI'
   ]);
+  
+  // Predefined cities - Major Indian cities
+  const majorCities = useState<string[]>([
+    'Agra', 'Ahmedabad', 'Bangalore', 'Bhopal', 'Bhubaneswar', 'Chandigarh', 'Chennai',
+    'Coimbatore', 'Delhi', 'Gurgaon', 'Guwahati', 'Hyderabad', 'Indore', 'Jaipur',
+    'Kochi', 'Kolkata', 'Lucknow', 'Madurai', 'Mangalore', 'Mumbai', 'Mysore',
+    'Nagpur', 'Nashik', 'Noida', 'Patna', 'Pune', 'Rajkot', 'Surat', 'Thiruvananthapuram',
+    'Tiruchirappalli', 'Vadodara', 'Varanasi', 'Vijayawada', 'Visakhapatnam'
+  ]);
 
   // Check authentication on component mount
   useEffect(() => {

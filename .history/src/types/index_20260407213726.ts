@@ -50,28 +50,12 @@ export interface RelativeInIT {
   name: string;                  // Full name
   gender: 'Male' | 'Female' | 'Other';
   relationship: string;          // Father, Mother, Brother, Uncle, Neighbor, etc.
-  contactNumber: string;         // Phone number
-  whatsappNumber?: string;       // WhatsApp number (optional)
-  personalEmail?: string;        // Personal email
-  email: string;                 // Email address
-  education: string;             // Highest qualification
-  occupationType: 'homemaker' | 'employed' | 'self-employed' | 'retired' | '';
-  previousOccupation?: string;   // For homemaker
-  employmentType?: 'government' | 'private' | 'public' | 'ngo' | '';
-  organizationName?: string;     // Organization/Company name
-  sector?: string;               // Sector/Industry
-  designation: string;           // Job title
-  yearsOfExperience: number;     // How many years of experience
-  officeAddress?: string;        // Office address
-  officeContactNumber?: string;  // Office contact number
-  officeEmail?: string;          // Official email
-  businessName?: string;         // Business name
-  businessType?: string;         // Type of business
-  businessIndustry?: string;     // Industry
-  businessRole?: string;         // Owner/Partner/Freelancer
-  businessAddress?: string;      // Business address
   company: string;               // Where they work (e.g., Google, TCS, Wipro, BHEL, L&T)
+  designation: string;           // Job title (e.g., Software Engineer, Manager, Design Engineer, Project Engineer)
+  contactNumber: string;         // Phone number
+  email: string;                 // Email address
   workCity: string;              // City where they work (e.g., Chennai, Bangalore)
+  yearsOfExperience: number;     // How many years of experience
 }
 
 // Student information
@@ -100,26 +84,9 @@ export interface Student {
   hasSiblingsInIT: boolean;
   siblings: {
     name: string;
-    contactNumber: string;
-    whatsappNumber?: string;
-    personalEmail?: string;
     education: string;
-    occupationType: 'homemaker' | 'employed' | 'self-employed' | 'retired' | '';
-    previousOccupation?: string;
-    employmentType?: 'government' | 'private' | 'public' | 'ngo' | '';
-    organizationName?: string;
-    sector?: string;
-    designation: string;
-    yearsOfExperience?: number;
-    officeAddress?: string;
-    officeContactNumber?: string;
-    officeEmail?: string;
-    businessName?: string;
-    businessType?: string;
-    businessIndustry?: string;
-    businessRole?: string;
-    businessAddress?: string;
     company: string;
+    designation: string;
     city: string;
   }[];
   

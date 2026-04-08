@@ -168,7 +168,7 @@ function StudentForm() {
   };
 
   // Function to update a sibling's field
-  const updateSibling = (index: number, field: string, value: any) => {
+  const updateSibling = (index: number, field: string, value: string) => {
     const updated = [...siblings];
     updated[index] = { ...updated[index], [field]: value };
     setSiblings(updated);
@@ -269,20 +269,9 @@ function StudentForm() {
       case 3: // Professional Contacts
         if (hasRelativesInIT) {
           for (let i = 0; i < relativesInIT.length; i++) {
-            if (!relativesInIT[i].name || !relativesInIT[i].relationship || !relativesInIT[i].contactNumber || !relativesInIT[i].education || !relativesInIT[i].occupationType || !relativesInIT[i].company || !relativesInIT[i].designation || !relativesInIT[i].workCity) {
-              setError('Please fill all required professional contact details');
+            if (!relativesInIT[i].name || !relativesInIT[i].relationship || !relativesInIT[i].company || !relativesInIT[i].designation || !relativesInIT[i].workCity || !relativesInIT[i].contactNumber) {
+              setError('Please fill all professional contact details');
               return false;
-            }
-            if (relativesInIT[i].occupationType === 'employed') {
-              if (!relativesInIT[i].employmentType || !relativesInIT[i].organizationName || !relativesInIT[i].sector || !relativesInIT[i].officeContactNumber || !relativesInIT[i].officeAddress || !relativesInIT[i].officeEmail) {
-                setError('Please fill all required employment details for contact ' + (i + 1));
-                return false;
-              }
-            } else if (relativesInIT[i].occupationType === 'self-employed') {
-              if (!relativesInIT[i].businessName || !relativesInIT[i].businessType || !relativesInIT[i].businessIndustry || !relativesInIT[i].businessRole || !relativesInIT[i].businessAddress) {
-                setError('Please fill all required business details for contact ' + (i + 1));
-                return false;
-              }
             }
           }
         }
@@ -1477,29 +1466,16 @@ function StudentForm() {
                     </div>
 
                     <div className="form-group">
-                      <label className="form-label">Job Title / Designation *</label>
+                      <label className="form-label">Office Contact Number *</label>
                       <input
-                        type="text"
+                        type="tel"
                         className="form-input"
-                        placeholder="e.g., Software Engineer, Manager, Project Lead"
-                        value={relative.designation || ''}
-                        onChange={(e) => updateRelative(index, 'designation', e.target.value)}
+                        placeholder="Office landline or mobile"
+                        value={relative.officeContactNumber || ''}
+                        onChange={(e) => updateRelative(index, 'officeContactNumber', e.target.value)}
                         required
                       />
                     </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Years of Experience *</label>
-                    <input
-                      type="number"
-                      className="form-input"
-                      placeholder="e.g., 0, 5, 10"
-                      value={relative.yearsOfExperience || 0}
-                      onChange={(e) => updateRelative(index, 'yearsOfExperience', parseInt(e.target.value) || 0)}
-                      min="0"
-                      required
-                    />
                   </div>
 
                   <div className="form-group">
@@ -1514,30 +1490,16 @@ function StudentForm() {
                     />
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Office Contact Number *</label>
-                      <input
-                        type="tel"
-                        className="form-input"
-                        placeholder="Office landline or mobile"
-                        value={relative.officeContactNumber || ''}
-                        onChange={(e) => updateRelative(index, 'officeContactNumber', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Official Email ID *</label>
-                      <input
-                        type="email"
-                        className="form-input"
-                        placeholder="official.email@company.com"
-                        value={relative.officeEmail || ''}
-                        onChange={(e) => updateRelative(index, 'officeEmail', e.target.value)}
-                        required
-                      />
-                    </div>
+                  <div className="form-group">
+                    <label className="form-label">Official Email ID *</label>
+                    <input
+                      type="email"
+                      className="form-input"
+                      placeholder="official.email@company.com"
+                      value={relative.officeEmail || ''}
+                      onChange={(e) => updateRelative(index, 'officeEmail', e.target.value)}
+                      required
+                    />
                   </div>
                 </>
               )}

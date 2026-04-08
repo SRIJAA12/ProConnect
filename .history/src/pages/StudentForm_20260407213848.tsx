@@ -53,10 +53,6 @@ function StudentForm() {
     businessAddress: ''
   };
 
-  const [motherAlive, setMotherAlive] = useState(true);
-  const [fatherAlive, setFatherAlive] = useState(true);
-  const [guardianAlive, setGuardianAlive] = useState(true);
-
   const [mother, setMother] = useState<ParentDetails>(defaultParentState);
   const [father, setFather] = useState<ParentDetails>(defaultParentState);
   const [guardian, setGuardian] = useState<ParentDetails | null>(null);
@@ -96,28 +92,12 @@ function StudentForm() {
       name: '',
       gender: 'Male',
       relationship: '',
-      contactNumber: '',
-      whatsappNumber: '',
-      personalEmail: '',
-      education: '',
-      occupationType: '',
-      previousOccupation: '',
-      employmentType: '',
-      organizationName: '',
-      sector: '',
       company: '',
       designation: '',
-      yearsOfExperience: 0,
-      officeAddress: '',
-      officeContactNumber: '',
-      officeEmail: '',
-      businessName: '',
-      businessType: '',
-      businessIndustry: '',
-      businessRole: '',
-      businessAddress: '',
+      contactNumber: '',
       email: '',
-      workCity: ''
+      workCity: '',
+      yearsOfExperience: 0
     }]);
   };
 
@@ -138,26 +118,9 @@ function StudentForm() {
   const addSibling = () => {
     setSiblings([...siblings, {
       name: '',
-      contactNumber: '',
-      whatsappNumber: '',
-      personalEmail: '',
       education: '',
-      occupationType: '',
-      previousOccupation: '',
-      employmentType: '',
-      organizationName: '',
-      sector: '',
-      designation: '',
-      yearsOfExperience: 0,
-      officeAddress: '',
-      officeContactNumber: '',
-      officeEmail: '',
-      businessName: '',
-      businessType: '',
-      businessIndustry: '',
-      businessRole: '',
-      businessAddress: '',
       company: '',
+      designation: '',
       city: ''
     }]);
   };
@@ -168,7 +131,7 @@ function StudentForm() {
   };
 
   // Function to update a sibling's field
-  const updateSibling = (index: number, field: string, value: any) => {
+  const updateSibling = (index: number, field: string, value: string) => {
     const updated = [...siblings];
     updated[index] = { ...updated[index], [field]: value };
     setSiblings(updated);
@@ -189,7 +152,11 @@ function StudentForm() {
         break;
       case 1: // Parent Details
         // Validate Mother
-        if (motherAlive) {
+        if (!mother.status) {
+          setError('Please select mother status (Alive/Nil/Deceased)');
+          return false;
+        }
+        if (mother.status === 'alive') {
           if (!mother.name || !mother.contactNumber || !mother.education || !mother.occupationType) {
             setError('Please fill all required mother details');
             return false;
@@ -208,7 +175,11 @@ function StudentForm() {
         }
 
         // Validate Father
-        if (fatherAlive) {
+        if (!father.status) {
+          setError('Please select father status (Alive/Nil/Deceased)');
+          return false;
+        }
+        if (father.status === 'alive') {
           if (!father.name || !father.contactNumber || !father.education || !father.occupationType) {
             setError('Please fill all required father details');
             return false;
@@ -227,20 +198,26 @@ function StudentForm() {
         }
 
         // Validate Guardian if present
-        if (hasGuardian && guardian && guardianAlive) {
-          if (!guardian.name || !guardian.contactNumber || !guardian.education || !guardian.occupationType) {
-            setError('Please fill all required guardian details');
+        if (hasGuardian && guardian) {
+          if (!guardian.status) {
+            setError('Please select guardian status');
             return false;
           }
-          if (guardian.occupationType === 'employed') {
-            if (!guardian.employmentType || !guardian.organizationName || !guardian.sector || !guardian.designation || !guardian.officeAddress || !guardian.officeContactNumber || !guardian.officeEmail) {
-              setError('Please fill all required guardian employment details');
+          if (guardian.status === 'alive') {
+            if (!guardian.name || !guardian.contactNumber || !guardian.education || !guardian.occupationType) {
+              setError('Please fill all required guardian details');
               return false;
             }
-          } else if (guardian.occupationType === 'self-employed') {
-            if (!guardian.businessName || !guardian.businessType || !guardian.businessIndustry || !guardian.businessRole || !guardian.businessAddress) {
-              setError('Please fill all required guardian business details');
-              return false;
+            if (guardian.occupationType === 'employed') {
+              if (!guardian.employmentType || !guardian.organizationName || !guardian.sector || !guardian.designation || !guardian.officeAddress || !guardian.officeContactNumber || !guardian.officeEmail) {
+                setError('Please fill all required guardian employment details');
+                return false;
+              }
+            } else if (guardian.occupationType === 'self-employed') {
+              if (!guardian.businessName || !guardian.businessType || !guardian.businessIndustry || !guardian.businessRole || !guardian.businessAddress) {
+                setError('Please fill all required guardian business details');
+                return false;
+              }
             }
           }
         }
@@ -248,20 +225,9 @@ function StudentForm() {
       case 2: // Siblings
         if (hasSiblingsInIT) {
           for (let i = 0; i < siblings.length; i++) {
-            if (!siblings[i].name || !siblings[i].contactNumber || !siblings[i].education || !siblings[i].occupationType || !siblings[i].designation || !siblings[i].company || !siblings[i].city) {
-              setError('Please fill all required sibling details');
+            if (!siblings[i].name || !siblings[i].education || !siblings[i].company || !siblings[i].designation || !siblings[i].city) {
+              setError('Please fill all sibling details');
               return false;
-            }
-            if (siblings[i].occupationType === 'employed') {
-              if (!siblings[i].employmentType || !siblings[i].organizationName || !siblings[i].sector || !siblings[i].officeAddress || !siblings[i].officeContactNumber || !siblings[i].officeEmail) {
-                setError('Please fill all required employment details for sibling ' + (i + 1));
-                return false;
-              }
-            } else if (siblings[i].occupationType === 'self-employed') {
-              if (!siblings[i].businessName || !siblings[i].businessType || !siblings[i].businessIndustry || !siblings[i].businessRole || !siblings[i].businessAddress) {
-                setError('Please fill all required business details for sibling ' + (i + 1));
-                return false;
-              }
             }
           }
         }
@@ -269,20 +235,9 @@ function StudentForm() {
       case 3: // Professional Contacts
         if (hasRelativesInIT) {
           for (let i = 0; i < relativesInIT.length; i++) {
-            if (!relativesInIT[i].name || !relativesInIT[i].relationship || !relativesInIT[i].contactNumber || !relativesInIT[i].education || !relativesInIT[i].occupationType || !relativesInIT[i].company || !relativesInIT[i].designation || !relativesInIT[i].workCity) {
-              setError('Please fill all required professional contact details');
+            if (!relativesInIT[i].name || !relativesInIT[i].relationship || !relativesInIT[i].company || !relativesInIT[i].designation || !relativesInIT[i].workCity || !relativesInIT[i].contactNumber) {
+              setError('Please fill all professional contact details');
               return false;
-            }
-            if (relativesInIT[i].occupationType === 'employed') {
-              if (!relativesInIT[i].employmentType || !relativesInIT[i].organizationName || !relativesInIT[i].sector || !relativesInIT[i].officeContactNumber || !relativesInIT[i].officeAddress || !relativesInIT[i].officeEmail) {
-                setError('Please fill all required employment details for contact ' + (i + 1));
-                return false;
-              }
-            } else if (relativesInIT[i].occupationType === 'self-employed') {
-              if (!relativesInIT[i].businessName || !relativesInIT[i].businessType || !relativesInIT[i].businessIndustry || !relativesInIT[i].businessRole || !relativesInIT[i].businessAddress) {
-                setError('Please fill all required business details for contact ' + (i + 1));
-                return false;
-              }
             }
           }
         }
@@ -516,29 +471,30 @@ function StudentForm() {
     const renderParentFormSection = (
       parent: ParentDetails,
       setParent: (parent: ParentDetails) => void,
-      title: string,
-      isAlive: boolean,
-      setIsAlive: (alive: boolean) => void
+      title: string
     ) => (
       <div className="parent-section">
         <h3 className="subsection-title">{title}</h3>
 
-        {/* Status Checkbox */}
+        {/* Status Selection */}
         <div className="form-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={isAlive}
-              onChange={(e) => {
-                setIsAlive(e.target.checked);
-                setParent({ ...parent, status: e.target.checked ? 'alive' : 'nil' });
-              }}
-            />
-            <span>{title.replace("'s Details", '')}</span>
-          </label>
+          <label className="form-label">Status *</label>
+          <select
+            className="form-input"
+            value={parent.status}
+            onChange={(e) =>
+              setParent({ ...parent, status: e.target.value as 'alive' | 'nil' | 'deceased' })
+            }
+            required
+          >
+            <option value="">Select Status</option>
+            <option value="alive">Alive</option>
+            <option value="nil">Not Applicable (NIL)</option>
+            <option value="deceased">Deceased</option>
+          </select>
         </div>
 
-        {isAlive && (
+        {parent.status === 'alive' && (
           <>
             {/* Basic Details */}
             <div className="form-group">
@@ -561,7 +517,7 @@ function StudentForm() {
                   className="form-input"
                   placeholder="10-digit mobile number"
                   value={parent.contactNumber}
-                  onChange={(e) => setParent({ ...parent, contactNumber: e.target.value, whatsappNumber: e.target.value })}
+                  onChange={(e) => setParent({ ...parent, contactNumber: e.target.value })}
                   required
                 />
               </div>
@@ -850,8 +806,8 @@ function StudentForm() {
       <div className="form-section">
         <h2>Parent / Guardian Information</h2>
 
-        {renderParentFormSection(mother, setMother, "Mother's Details", motherAlive, setMotherAlive)}
-        {renderParentFormSection(father, setFather, "Father's Details", fatherAlive, setFatherAlive)}
+        {renderParentFormSection(mother, setMother, "Mother's Details")}
+        {renderParentFormSection(father, setFather, "Father's Details")}
 
         {/* Guardian Section */}
         <div className="form-group guardian-section">
@@ -872,7 +828,7 @@ function StudentForm() {
           </label>
         </div>
 
-        {hasGuardian && guardian && renderParentFormSection(guardian, setGuardian, "Guardian's Details", guardianAlive, setGuardianAlive)}
+        {hasGuardian && guardian && renderParentFormSection(guardian, setGuardian, "Guardian's Details")}
       </div>
     );
   };
@@ -922,289 +878,17 @@ function StudentForm() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Contact Number *</label>
+                  <label className="form-label">Education *</label>
                   <input
-                    type="tel"
+                    type="text"
                     className="form-input"
-                    placeholder="10-digit mobile number"
-                    value={sibling.contactNumber}
-                    onChange={(e) => {
-                      updateSibling(index, 'contactNumber', e.target.value);
-                      updateSibling(index, 'whatsappNumber', e.target.value);
-                    }}
+                    placeholder="e.g., B.Tech, M.Tech, B.E"
+                    value={sibling.education}
+                    onChange={(e) => updateSibling(index, 'education', e.target.value)}
                     required
                   />
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label">WhatsApp Number (Optional)</label>
-                  <input
-                    type="tel"
-                    className="form-input"
-                    placeholder="Same as above or different"
-                    value={sibling.whatsappNumber || ''}
-                    onChange={(e) => updateSibling(index, 'whatsappNumber', e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Personal Email (Optional)</label>
-                <input
-                  type="email"
-                  className="form-input"
-                  placeholder="email@example.com"
-                  value={sibling.personalEmail || ''}
-                  onChange={(e) => updateSibling(index, 'personalEmail', e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Highest Qualification *</label>
-                <select
-                  className="form-input"
-                  value={sibling.education}
-                  onChange={(e) => updateSibling(index, 'education', e.target.value)}
-                  required
-                >
-                  <option value="">Select Education Level</option>
-                  <option value="No formal education">No formal education</option>
-                  <option value="School">School</option>
-                  <option value="Diploma">Diploma</option>
-                  <option value="Undergraduate">Undergraduate (B.A, B.Com, B.Sc, B.E, B.Tech)</option>
-                  <option value="Postgraduate">Postgraduate (M.A, M.Com, M.Sc, M.Tech, MBA)</option>
-                  <option value="PhD">PhD / Doctorate</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Occupation Type *</label>
-                <select
-                  className="form-input"
-                  value={sibling.occupationType}
-                  onChange={(e) => {
-                    updateSibling(index, 'occupationType', e.target.value);
-                    // Reset occupation-specific fields
-                    updateSibling(index, 'employmentType', '');
-                    updateSibling(index, 'organizationName', '');
-                    updateSibling(index, 'sector', '');
-                    updateSibling(index, 'designation', '');
-                    updateSibling(index, 'yearsOfExperience', 0);
-                    updateSibling(index, 'officeAddress', '');
-                    updateSibling(index, 'officeContactNumber', '');
-                    updateSibling(index, 'officeEmail', '');
-                    updateSibling(index, 'businessName', '');
-                    updateSibling(index, 'businessType', '');
-                    updateSibling(index, 'businessIndustry', '');
-                    updateSibling(index, 'businessRole', '');
-                    updateSibling(index, 'businessAddress', '');
-                    updateSibling(index, 'previousOccupation', '');
-                  }}
-                  required
-                >
-                  <option value="">Select Occupation Type</option>
-                  <option value="homemaker">Homemaker</option>
-                  <option value="employed">Employed</option>
-                  <option value="self-employed">Self-employed / Business Owner</option>
-                  <option value="retired">Retired</option>
-                </select>
-              </div>
-
-              {sibling.occupationType === 'homemaker' && (
-                <div className="form-group">
-                  <label className="form-label">Previous Occupation (Optional)</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="e.g., Teacher, Engineer, Doctor (if applicable)"
-                    value={sibling.previousOccupation || ''}
-                    onChange={(e) => updateSibling(index, 'previousOccupation', e.target.value)}
-                  />
-                </div>
-              )}
-
-              {sibling.occupationType === 'employed' && (
-                <>
-                  <div className="form-group">
-                    <label className="form-label">Employment Type *</label>
-                    <select
-                      className="form-input"
-                      value={sibling.employmentType || ''}
-                      onChange={(e) => updateSibling(index, 'employmentType', e.target.value)}
-                      required
-                    >
-                      <option value="">Select Employment Type</option>
-                      <option value="government">Government</option>
-                      <option value="private">Private</option>
-                      <option value="public">Public Sector (PSU)</option>
-                      <option value="ngo">NGO</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Organization/Company Name *</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      placeholder="e.g., Google, TCS, L&T, BHEL, Government Department"
-                      value={sibling.organizationName || ''}
-                      onChange={(e) => updateSibling(index, 'organizationName', e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Sector/Industry *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., IT, Manufacturing, Education, Healthcare"
-                        value={sibling.sector || ''}
-                        onChange={(e) => updateSibling(index, 'sector', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Job Title / Designation *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., Software Engineer, Manager, Project Lead"
-                        value={sibling.designation || ''}
-                        onChange={(e) => updateSibling(index, 'designation', e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Years of Experience *</label>
-                    <input
-                      type="number"
-                      className="form-input"
-                      placeholder="e.g., 0, 5, 10"
-                      value={sibling.yearsOfExperience || 0}
-                      onChange={(e) => updateSibling(index, 'yearsOfExperience', parseInt(e.target.value) || 0)}
-                      min="0"
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Office Address *</label>
-                    <textarea
-                      className="form-input"
-                      placeholder="Full office address"
-                      value={sibling.officeAddress || ''}
-                      onChange={(e) => updateSibling(index, 'officeAddress', e.target.value)}
-                      required
-                      rows={2}
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Office Contact Number *</label>
-                      <input
-                        type="tel"
-                        className="form-input"
-                        placeholder="Office landline or mobile"
-                        value={sibling.officeContactNumber || ''}
-                        onChange={(e) => updateSibling(index, 'officeContactNumber', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Official Email ID *</label>
-                      <input
-                        type="email"
-                        className="form-input"
-                        placeholder="official.email@company.com"
-                        value={sibling.officeEmail || ''}
-                        onChange={(e) => updateSibling(index, 'officeEmail', e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {sibling.occupationType === 'self-employed' && (
-                <>
-                  <div className="form-group">
-                    <label className="form-label">Business Name *</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      placeholder="e.g., My Business Name"
-                      value={sibling.businessName || ''}
-                      onChange={(e) => updateSibling(index, 'businessName', e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Business Type *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., Manufacturing, Trading, Services"
-                        value={sibling.businessType || ''}
-                        onChange={(e) => updateSibling(index, 'businessType', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Industry *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., IT, Agriculture, Retail"
-                        value={sibling.businessIndustry || ''}
-                        onChange={(e) => updateSibling(index, 'businessIndustry', e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Your Role *</label>
-                    <select
-                      className="form-input"
-                      value={sibling.businessRole || ''}
-                      onChange={(e) => updateSibling(index, 'businessRole', e.target.value)}
-                      required
-                    >
-                      <option value="">Select Role</option>
-                      <option value="Owner">Owner</option>
-                      <option value="Partner">Partner</option>
-                      <option value="Freelancer">Freelancer</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Business Address *</label>
-                    <textarea
-                      className="form-input"
-                      placeholder="Full business address"
-                      value={sibling.businessAddress || ''}
-                      onChange={(e) => updateSibling(index, 'businessAddress', e.target.value)}
-                      required
-                      rows={2}
-                    />
-                  </div>
-                </>
-              )}
-
-              <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">Company *</label>
                   <input
@@ -1213,6 +897,20 @@ function StudentForm() {
                     placeholder="e.g., Google, TCS, L&T, BHEL"
                     value={sibling.company}
                     onChange={(e) => updateSibling(index, 'company', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Designation *</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="e.g., Software Engineer, Design Engineer"
+                    value={sibling.designation}
+                    onChange={(e) => updateSibling(index, 'designation', e.target.value)}
                     required
                   />
                 </div>
@@ -1331,289 +1029,6 @@ function StudentForm() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Contact Number *</label>
-                  <input
-                    type="tel"
-                    className="form-input"
-                    placeholder="10-digit mobile number"
-                    value={relative.contactNumber}
-                    onChange={(e) => {
-                      updateRelative(index, 'contactNumber', e.target.value);
-                      updateRelative(index, 'whatsappNumber', e.target.value);
-                    }}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">WhatsApp Number (Optional)</label>
-                  <input
-                    type="tel"
-                    className="form-input"
-                    placeholder="Same as above or different"
-                    value={relative.whatsappNumber || ''}
-                    onChange={(e) => updateRelative(index, 'whatsappNumber', e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Personal Email (Optional)</label>
-                <input
-                  type="email"
-                  className="form-input"
-                  placeholder="email@example.com"
-                  value={relative.personalEmail || ''}
-                  onChange={(e) => updateRelative(index, 'personalEmail', e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Highest Qualification *</label>
-                <select
-                  className="form-input"
-                  value={relative.education}
-                  onChange={(e) => updateRelative(index, 'education', e.target.value)}
-                  required
-                >
-                  <option value="">Select Education Level</option>
-                  <option value="No formal education">No formal education</option>
-                  <option value="School">School</option>
-                  <option value="Diploma">Diploma</option>
-                  <option value="Undergraduate">Undergraduate (B.A, B.Com, B.Sc, B.E, B.Tech)</option>
-                  <option value="Postgraduate">Postgraduate (M.A, M.Com, M.Sc, M.Tech, MBA)</option>
-                  <option value="PhD">PhD / Doctorate</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Occupation Type *</label>
-                <select
-                  className="form-input"
-                  value={relative.occupationType}
-                  onChange={(e) => {
-                    updateRelative(index, 'occupationType', e.target.value);
-                    // Reset occupation-specific fields
-                    updateRelative(index, 'employmentType', '');
-                    updateRelative(index, 'organizationName', '');
-                    updateRelative(index, 'sector', '');
-                    updateRelative(index, 'yearsOfExperience', 0);
-                    updateRelative(index, 'officeAddress', '');
-                    updateRelative(index, 'officeContactNumber', '');
-                    updateRelative(index, 'officeEmail', '');
-                    updateRelative(index, 'businessName', '');
-                    updateRelative(index, 'businessType', '');
-                    updateRelative(index, 'businessIndustry', '');
-                    updateRelative(index, 'businessRole', '');
-                    updateRelative(index, 'businessAddress', '');
-                    updateRelative(index, 'previousOccupation', '');
-                  }}
-                  required
-                >
-                  <option value="">Select Occupation Type</option>
-                  <option value="homemaker">Homemaker</option>
-                  <option value="employed">Employed</option>
-                  <option value="self-employed">Self-employed / Business Owner</option>
-                  <option value="retired">Retired</option>
-                </select>
-              </div>
-
-              {relative.occupationType === 'homemaker' && (
-                <div className="form-group">
-                  <label className="form-label">Previous Occupation (Optional)</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="e.g., Teacher, Engineer, Doctor (if applicable)"
-                    value={relative.previousOccupation || ''}
-                    onChange={(e) => updateRelative(index, 'previousOccupation', e.target.value)}
-                  />
-                </div>
-              )}
-
-              {relative.occupationType === 'employed' && (
-                <>
-                  <div className="form-group">
-                    <label className="form-label">Employment Type *</label>
-                    <select
-                      className="form-input"
-                      value={relative.employmentType || ''}
-                      onChange={(e) => updateRelative(index, 'employmentType', e.target.value)}
-                      required
-                    >
-                      <option value="">Select Employment Type</option>
-                      <option value="government">Government</option>
-                      <option value="private">Private</option>
-                      <option value="public">Public Sector (PSU)</option>
-                      <option value="ngo">NGO</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Organization/Company Name *</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      placeholder="e.g., Google, TCS, L&T, BHEL, Government Department"
-                      value={relative.organizationName || ''}
-                      onChange={(e) => updateRelative(index, 'organizationName', e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Sector/Industry *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., IT, Manufacturing, Education, Healthcare"
-                        value={relative.sector || ''}
-                        onChange={(e) => updateRelative(index, 'sector', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Job Title / Designation *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., Software Engineer, Manager, Project Lead"
-                        value={relative.designation || ''}
-                        onChange={(e) => updateRelative(index, 'designation', e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Years of Experience *</label>
-                    <input
-                      type="number"
-                      className="form-input"
-                      placeholder="e.g., 0, 5, 10"
-                      value={relative.yearsOfExperience || 0}
-                      onChange={(e) => updateRelative(index, 'yearsOfExperience', parseInt(e.target.value) || 0)}
-                      min="0"
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Office Address *</label>
-                    <textarea
-                      className="form-input"
-                      placeholder="Full office address"
-                      value={relative.officeAddress || ''}
-                      onChange={(e) => updateRelative(index, 'officeAddress', e.target.value)}
-                      required
-                      rows={2}
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Office Contact Number *</label>
-                      <input
-                        type="tel"
-                        className="form-input"
-                        placeholder="Office landline or mobile"
-                        value={relative.officeContactNumber || ''}
-                        onChange={(e) => updateRelative(index, 'officeContactNumber', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Official Email ID *</label>
-                      <input
-                        type="email"
-                        className="form-input"
-                        placeholder="official.email@company.com"
-                        value={relative.officeEmail || ''}
-                        onChange={(e) => updateRelative(index, 'officeEmail', e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {relative.occupationType === 'self-employed' && (
-                <>
-                  <div className="form-group">
-                    <label className="form-label">Business Name *</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      placeholder="e.g., My Business Name"
-                      value={relative.businessName || ''}
-                      onChange={(e) => updateRelative(index, 'businessName', e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Business Type *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., Manufacturing, Trading, Services"
-                        value={relative.businessType || ''}
-                        onChange={(e) => updateRelative(index, 'businessType', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Industry *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., IT, Agriculture, Retail"
-                        value={relative.businessIndustry || ''}
-                        onChange={(e) => updateRelative(index, 'businessIndustry', e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Your Role *</label>
-                    <select
-                      className="form-input"
-                      value={relative.businessRole || ''}
-                      onChange={(e) => updateRelative(index, 'businessRole', e.target.value)}
-                      required
-                    >
-                      <option value="">Select Role</option>
-                      <option value="Owner">Owner</option>
-                      <option value="Partner">Partner</option>
-                      <option value="Freelancer">Freelancer</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Business Address *</label>
-                    <textarea
-                      className="form-input"
-                      placeholder="Full business address"
-                      value={relative.businessAddress || ''}
-                      onChange={(e) => updateRelative(index, 'businessAddress', e.target.value)}
-                      required
-                      rows={2}
-                    />
-                  </div>
-                </>
-              )}
-
-              <div className="form-row">
-                <div className="form-group">
                   <label className="form-label">Company *</label>
                   <input
                     type="text"
@@ -1664,16 +1079,30 @@ function StudentForm() {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Email Address *</label>
-                <input
-                  type="email"
-                  className="form-input"
-                  placeholder="email@example.com"
-                  value={relative.email}
-                  onChange={(e) => updateRelative(index, 'email', e.target.value)}
-                  required
-                />
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Contact Number *</label>
+                  <input
+                    type="tel"
+                    className="form-input"
+                    placeholder="10-digit mobile number"
+                    value={relative.contactNumber}
+                    onChange={(e) => updateRelative(index, 'contactNumber', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Email Address *</label>
+                  <input
+                    type="email"
+                    className="form-input"
+                    placeholder="email@example.com"
+                    value={relative.email}
+                    onChange={(e) => updateRelative(index, 'email', e.target.value)}
+                    required
+                  />
+                </div>
               </div>
 
               <button
