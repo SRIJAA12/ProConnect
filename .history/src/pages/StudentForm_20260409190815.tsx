@@ -1347,18 +1347,6 @@ function StudentForm() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Contact Number *</label>
-                <input
-                  type="tel"
-                  className="form-input"
-                  placeholder="10-digit contact number"
-                  value={relative.contactNumber || ''}
-                  onChange={(e) => updateRelative(index, 'contactNumber', e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
                 <label className="form-label">Personal Email (Optional)</label>
                 <input
                   type="email"
@@ -1366,17 +1354,6 @@ function StudentForm() {
                   placeholder="email@example.com"
                   value={relative.personalEmail || ''}
                   onChange={(e) => updateRelative(index, 'personalEmail', e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Work Email (Optional)</label>
-                <input
-                  type="email"
-                  className="form-input"
-                  placeholder="work.email@company.com"
-                  value={relative.email || ''}
-                  onChange={(e) => updateRelative(index, 'email', e.target.value)}
                 />
               </div>
 
@@ -1405,7 +1382,7 @@ function StudentForm() {
                   className="form-input"
                   value={relative.occupationType || ''}
                   onChange={(e) => {
-                    const occupationType = e.target.value as 'homemaker' | 'employed' | 'self-employed' | 'retired' | '';
+                    const occupationType = e.target.value;
                     const updated = [...relativesInIT];
                     updated[index] = {
                       ...updated[index],
@@ -1453,6 +1430,35 @@ function StudentForm() {
 
               {relative.occupationType === 'employed' && (
                 <>
+                  <div className="form-group">
+                    <label className="form-label">Employment Type *</label>
+                    <select
+                      className="form-input"
+                      value={relative.employmentType || ''}
+                      onChange={(e) => updateRelative(index, 'employmentType', e.target.value)}
+                      required
+                    >
+                      <option value="">Select Employment Type</option>
+                      <option value="government">Government</option>
+                      <option value="private">Private</option>
+                      <option value="public">Public Sector (PSU)</option>
+                      <option value="ngo">NGO</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Organization/Company Name *</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="e.g., Google, TCS, L&T, BHEL, Government Department"
+                      value={relative.organizationName || ''}
+                      onChange={(e) => updateRelative(index, 'organizationName', e.target.value)}
+                      required
+                    />
+                  </div>
+
                   <div className="form-row">
                     <div className="form-group">
                       <label className="form-label">Sector/Industry *</label>
@@ -1474,32 +1480,6 @@ function StudentForm() {
                         placeholder="e.g., Software Engineer, Manager, Project Lead"
                         value={relative.designation || ''}
                         onChange={(e) => updateRelative(index, 'designation', e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Company/Organization Name *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., Google, TCS, Infosys"
-                        value={relative.company || ''}
-                        onChange={(e) => updateRelative(index, 'company', e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">City *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., Bangalore, Chennai, Mumbai"
-                        value={relative.workCity || ''}
-                        onChange={(e) => updateRelative(index, 'workCity', e.target.value)}
                         required
                       />
                     </div>

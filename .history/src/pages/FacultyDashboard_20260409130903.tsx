@@ -832,11 +832,9 @@ function FacultyDashboard() {
                           </div>
                         </td>
                         <td className="td-center">
-                          {student.hasRelativesInIT || student.hasSiblingsInIT || (student.parents && ((student.parents.father && student.parents.father.occupationType === 'employed' && student.parents.father.status === 'alive') || (student.parents.mother && student.parents.mother.occupationType === 'employed' && student.parents.mother.status === 'alive'))) ? (
+                          {student.hasRelativesInIT || student.hasSiblingsInIT ? (
                             <span className="badge badge-success">
-                              {(student.relativesInIT?.length || 0) + (student.siblings?.length || 0) + 
-                                (student.parents?.father?.occupationType === 'employed' && student.parents?.father?.status === 'alive' ? 1 : 0) +
-                                (student.parents?.mother?.occupationType === 'employed' && student.parents?.mother?.status === 'alive' ? 1 : 0)} Contact(s)
+                              {(student.relativesInIT?.length || 0) + (student.siblings?.length || 0)} Contact(s)
                             </span>
                           ) : (
                             <span className="badge badge-gray">None</span>
@@ -1361,11 +1359,11 @@ function FacultyDashboard() {
                 </section>
               )}
 
-              {/* Professional Contacts - Including Employed Parents in Count */}
-              {(selectedStudent.hasRelativesInIT || (selectedStudent.parents && ((selectedStudent.parents.father && selectedStudent.parents.father.occupationType === 'employed' && selectedStudent.parents.father.status === 'alive') || (selectedStudent.parents.mother && selectedStudent.parents.mother.occupationType === 'employed' && selectedStudent.parents.mother.status === 'alive')))) && (
+              {/* Professional Contacts */}
+              {selectedStudent.hasRelativesInIT && selectedStudent.relativesInIT && selectedStudent.relativesInIT.length > 0 && (
                 <section className="detail-section">
                   <h3>Professional Contacts (Engineering/Related Fields)</h3>
-                  {selectedStudent.relativesInIT && selectedStudent.relativesInIT.map((relative, index) => (
+                  {selectedStudent.relativesInIT.map((relative, index) => (
                     <div key={index} className="card-detail">
                       <h4 style={{ marginBottom: '12px', color: '#2c3e50' }}>Contact {index + 1}</h4>
                       <div className="detail-grid">

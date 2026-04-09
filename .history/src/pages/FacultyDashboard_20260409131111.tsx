@@ -832,11 +832,9 @@ function FacultyDashboard() {
                           </div>
                         </td>
                         <td className="td-center">
-                          {student.hasRelativesInIT || student.hasSiblingsInIT || (student.parents && ((student.parents.father && student.parents.father.occupationType === 'employed' && student.parents.father.status === 'alive') || (student.parents.mother && student.parents.mother.occupationType === 'employed' && student.parents.mother.status === 'alive'))) ? (
+                          {student.hasRelativesInIT || student.hasSiblingsInIT ? (
                             <span className="badge badge-success">
-                              {(student.relativesInIT?.length || 0) + (student.siblings?.length || 0) + 
-                                (student.parents?.father?.occupationType === 'employed' && student.parents?.father?.status === 'alive' ? 1 : 0) +
-                                (student.parents?.mother?.occupationType === 'employed' && student.parents?.mother?.status === 'alive' ? 1 : 0)} Contact(s)
+                              {(student.relativesInIT?.length || 0) + (student.siblings?.length || 0)} Contact(s)
                             </span>
                           ) : (
                             <span className="badge badge-gray">None</span>

@@ -832,11 +832,9 @@ function FacultyDashboard() {
                           </div>
                         </td>
                         <td className="td-center">
-                          {student.hasRelativesInIT || student.hasSiblingsInIT || (student.parents && ((student.parents.father && student.parents.father.occupationType === 'employed' && student.parents.father.status === 'alive') || (student.parents.mother && student.parents.mother.occupationType === 'employed' && student.parents.mother.status === 'alive'))) ? (
+                          {student.hasRelativesInIT || student.hasSiblingsInIT ? (
                             <span className="badge badge-success">
-                              {(student.relativesInIT?.length || 0) + (student.siblings?.length || 0) + 
-                                (student.parents?.father?.occupationType === 'employed' && student.parents?.father?.status === 'alive' ? 1 : 0) +
-                                (student.parents?.mother?.occupationType === 'employed' && student.parents?.mother?.status === 'alive' ? 1 : 0)} Contact(s)
+                              {(student.relativesInIT?.length || 0) + (student.siblings?.length || 0)} Contact(s)
                             </span>
                           ) : (
                             <span className="badge badge-gray">None</span>
@@ -1001,88 +999,38 @@ function FacultyDashboard() {
                             <span className="detail-value">{selectedStudent.parents.father.name}</span>
                           </div>
                           <div className="detail-item">
-                            <span className="detail-label">Contact Number:</span>
+                            <span className="detail-label">Contact:</span>
                             <span className="detail-value">{selectedStudent.parents.father.contactNumber}</span>
                           </div>
                           <div className="detail-item">
-                            <span className="detail-label">WhatsApp Number:</span>
-                            <span className="detail-value">{selectedStudent.parents.father.whatsappNumber || 'N/A'}</span>
-                          </div>
-                          <div className="detail-item">
-                            <span className="detail-label">Personal Email:</span>
+                            <span className="detail-label">Email:</span>
                             <span className="detail-value">{selectedStudent.parents.father.personalEmail || 'N/A'}</span>
                           </div>
                           <div className="detail-item">
-                            <span className="detail-label">Highest Qualification:</span>
+                            <span className="detail-label">Education:</span>
                             <span className="detail-value">{selectedStudent.parents.father.education}</span>
                           </div>
                           <div className="detail-item">
                             <span className="detail-label">Occupation Type:</span>
                             <span className="detail-value">{selectedStudent.parents.father.occupationType}</span>
                           </div>
-                          {selectedStudent.parents.father.occupationType === 'homemaker' && (
-                            <div className="detail-item">
-                              <span className="detail-label">Previous Occupation:</span>
-                              <span className="detail-value">{selectedStudent.parents.father.previousOccupation || 'N/A'}</span>
-                            </div>
-                          )}
                           {selectedStudent.parents.father.occupationType === 'employed' && (
                             <>
                               <div className="detail-item">
-                                <span className="detail-label">Employment Type:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.employmentType || 'N/A'}</span>
+                                <span className="detail-label">Organization:</span>
+                                <span className="detail-value">{selectedStudent.parents.father.organizationName}</span>
                               </div>
                               <div className="detail-item">
-                                <span className="detail-label">Organization/Company:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.organizationName || 'N/A'}</span>
+                                <span className="detail-label">Designation:</span>
+                                <span className="detail-value">{selectedStudent.parents.father.designation}</span>
                               </div>
                               <div className="detail-item">
-                                <span className="detail-label">Sector/Industry:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.sector || 'N/A'}</span>
+                                <span className="detail-label">Office Contact:</span>
+                                <span className="detail-value">{selectedStudent.parents.father.officeContactNumber}</span>
                               </div>
                               <div className="detail-item">
-                                <span className="detail-label">Job Title / Designation:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.designation || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Years of Experience:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.yearsOfExperience || 0}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Office Address:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.officeAddress || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Office Contact Number:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.officeContactNumber || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Official Email:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.officeEmail || 'N/A'}</span>
-                              </div>
-                            </>
-                          )}
-                          {selectedStudent.parents.father.occupationType === 'self-employed' && (
-                            <>
-                              <div className="detail-item">
-                                <span className="detail-label">Business Name:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.businessName || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Business Type:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.businessType || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Industry:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.businessIndustry || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Your Role:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.businessRole || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Business Address:</span>
-                                <span className="detail-value">{selectedStudent.parents.father.businessAddress || 'N/A'}</span>
+                                <span className="detail-label">Office Email:</span>
+                                <span className="detail-value">{selectedStudent.parents.father.officeEmail}</span>
                               </div>
                             </>
                           )}
@@ -1108,88 +1056,38 @@ function FacultyDashboard() {
                             <span className="detail-value">{selectedStudent.parents.mother.name}</span>
                           </div>
                           <div className="detail-item">
-                            <span className="detail-label">Contact Number:</span>
+                            <span className="detail-label">Contact:</span>
                             <span className="detail-value">{selectedStudent.parents.mother.contactNumber}</span>
                           </div>
                           <div className="detail-item">
-                            <span className="detail-label">WhatsApp Number:</span>
-                            <span className="detail-value">{selectedStudent.parents.mother.whatsappNumber || 'N/A'}</span>
-                          </div>
-                          <div className="detail-item">
-                            <span className="detail-label">Personal Email:</span>
+                            <span className="detail-label">Email:</span>
                             <span className="detail-value">{selectedStudent.parents.mother.personalEmail || 'N/A'}</span>
                           </div>
                           <div className="detail-item">
-                            <span className="detail-label">Highest Qualification:</span>
+                            <span className="detail-label">Education:</span>
                             <span className="detail-value">{selectedStudent.parents.mother.education}</span>
                           </div>
                           <div className="detail-item">
                             <span className="detail-label">Occupation Type:</span>
                             <span className="detail-value">{selectedStudent.parents.mother.occupationType}</span>
                           </div>
-                          {selectedStudent.parents.mother.occupationType === 'homemaker' && (
-                            <div className="detail-item">
-                              <span className="detail-label">Previous Occupation:</span>
-                              <span className="detail-value">{selectedStudent.parents.mother.previousOccupation || 'N/A'}</span>
-                            </div>
-                          )}
                           {selectedStudent.parents.mother.occupationType === 'employed' && (
                             <>
                               <div className="detail-item">
-                                <span className="detail-label">Employment Type:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.employmentType || 'N/A'}</span>
+                                <span className="detail-label">Organization:</span>
+                                <span className="detail-value">{selectedStudent.parents.mother.organizationName}</span>
                               </div>
                               <div className="detail-item">
-                                <span className="detail-label">Organization/Company:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.organizationName || 'N/A'}</span>
+                                <span className="detail-label">Designation:</span>
+                                <span className="detail-value">{selectedStudent.parents.mother.designation}</span>
                               </div>
                               <div className="detail-item">
-                                <span className="detail-label">Sector/Industry:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.sector || 'N/A'}</span>
+                                <span className="detail-label">Office Contact:</span>
+                                <span className="detail-value">{selectedStudent.parents.mother.officeContactNumber}</span>
                               </div>
                               <div className="detail-item">
-                                <span className="detail-label">Job Title / Designation:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.designation || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Years of Experience:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.yearsOfExperience || 0}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Office Address:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.officeAddress || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Office Contact Number:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.officeContactNumber || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Official Email:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.officeEmail || 'N/A'}</span>
-                              </div>
-                            </>
-                          )}
-                          {selectedStudent.parents.mother.occupationType === 'self-employed' && (
-                            <>
-                              <div className="detail-item">
-                                <span className="detail-label">Business Name:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.businessName || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Business Type:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.businessType || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Industry:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.businessIndustry || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Your Role:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.businessRole || 'N/A'}</span>
-                              </div>
-                              <div className="detail-item">
-                                <span className="detail-label">Business Address:</span>
-                                <span className="detail-value">{selectedStudent.parents.mother.businessAddress || 'N/A'}</span>
+                                <span className="detail-label">Office Email:</span>
+                                <span className="detail-value">{selectedStudent.parents.mother.officeEmail}</span>
                               </div>
                             </>
                           )}
@@ -1361,11 +1259,11 @@ function FacultyDashboard() {
                 </section>
               )}
 
-              {/* Professional Contacts - Including Employed Parents in Count */}
-              {(selectedStudent.hasRelativesInIT || (selectedStudent.parents && ((selectedStudent.parents.father && selectedStudent.parents.father.occupationType === 'employed' && selectedStudent.parents.father.status === 'alive') || (selectedStudent.parents.mother && selectedStudent.parents.mother.occupationType === 'employed' && selectedStudent.parents.mother.status === 'alive')))) && (
+              {/* Professional Contacts */}
+              {selectedStudent.hasRelativesInIT && selectedStudent.relativesInIT && selectedStudent.relativesInIT.length > 0 && (
                 <section className="detail-section">
                   <h3>Professional Contacts (Engineering/Related Fields)</h3>
-                  {selectedStudent.relativesInIT && selectedStudent.relativesInIT.map((relative, index) => (
+                  {selectedStudent.relativesInIT.map((relative, index) => (
                     <div key={index} className="card-detail">
                       <h4 style={{ marginBottom: '12px', color: '#2c3e50' }}>Contact {index + 1}</h4>
                       <div className="detail-grid">

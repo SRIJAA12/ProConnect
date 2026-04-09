@@ -1405,7 +1405,7 @@ function StudentForm() {
                   className="form-input"
                   value={relative.occupationType || ''}
                   onChange={(e) => {
-                    const occupationType = e.target.value as 'homemaker' | 'employed' | 'self-employed' | 'retired' | '';
+                    const occupationType = e.target.value;
                     const updated = [...relativesInIT];
                     updated[index] = {
                       ...updated[index],
@@ -1451,8 +1451,6 @@ function StudentForm() {
                 </div>
               )}
 
-              {relative.occupationType === 'employed' && (
-                <>
                   <div className="form-row">
                     <div className="form-group">
                       <label className="form-label">Sector/Industry *</label>

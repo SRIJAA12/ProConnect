@@ -44,7 +44,7 @@ A modern web application for managing student information and connecting with IT
 ## 📁 Project Structure
 
 ```
-student-portal/
+ProConnect/
 ├── src/
 │   ├── config/
 │   │   └── firebase.ts          # Firebase configuration
@@ -81,7 +81,7 @@ student-portal/
 
 1. **Clone or navigate to the project**
    ```bash
-   cd d:\student-portal
+   cd d:\ProConnect
    ```
 
 2. **Install dependencies**
